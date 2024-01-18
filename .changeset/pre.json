@@ -4,5 +4,10 @@
   "initialVersions": {
     "@octopost/core": "0.1.0"
   },
-  "changesets": ["tough-trainers-cheer"]
+  "changesets": [
+    "cool-pans-appear",
+    "fresh-apricots-drive",
+    "tender-boxes-knock",
+    "tough-trainers-cheer"
+  ]
 }
