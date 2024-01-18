@@ -10,40 +10,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: Code checkout
-        uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+      - name: Code Checkout
+        uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Style-guide Tests (Stylelint, Prettier and Eslint)
-        run: pnpm code-style
-
-      - name: Install e2e dependencies
-        run: pnpm playwright install --with-deps
+      - name: Setup deps
+        uses: ./.github/actions/install-deps
 
       - name: Run unit Tests
-        run: pnpm test --silent
+        run: pnpm test:coverage --silent
 
-      - name: Run e2e tests
-        run: pnpm playwright test
+      - name: 'Report Coverage'
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
 
-      - name: Run ct tests
-        run: pnpm test-ct
+      - name: 'Upload Coverage'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
 
       - name: Build
         run: pnpm build

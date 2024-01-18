@@ -15,7 +15,10 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '~styles/global.scss': path.join(__dirname, 'src/styles/global.scss'),
+      '~styles': path.join(__dirname, 'src/styles'),
     },
+  },
+  build: {
+    target: ['edge88', 'firefox85', 'chrome88', 'safari14', 'ios14'],
   },
 });
